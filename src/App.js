@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import { Route, Routes, Navigate  } from "react-router-dom";
+import CoursesPage from "./pages/CoursesPage";
+import CoursePage from "./pages/CoursePage";
+import NotFound from "./pages/NotFound";
 
-function App() {
+function App(props) {
+  const fetchToken = async () => {
+    const response = await fetch(
+      "https://api.wisey.app/api/v1/auth/anonymous?platform=subscriptions"
+    );
+    const responseData = await response.json();
+    const token = responseData.token;
+    localStorage.setItem("token", `${token}`);
+  };
+  fetchToken();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<CoursesPage />} />
+      <Route path="/:id" element={<CoursePage />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
