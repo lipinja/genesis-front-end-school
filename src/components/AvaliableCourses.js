@@ -2,9 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import classes from "./AvaliableCourses.module.css";
 import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
+// import axios from 'axios';
 
 const AvaliableCourses = (props) => {
   const [courses, setCourses] = useState([]);
+  // const [courseVideoLink, setCourseVideoLink] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [coursesPerPage] = useState(10);
@@ -25,15 +27,20 @@ const AvaliableCourses = (props) => {
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-
       const responseData = await response.json();
-      setCourses(responseData.courses);
+      const coursesWithValidLinks = [];
+      responseData.courses.map((course) => {
+        if (course.meta.courseVideoPreview) {
+          coursesWithValidLinks.push(course);
+        }
+      });
+      setCourses(coursesWithValidLinks.reverse());
       setLoading(false);
     };
 
     fetchCourses().catch((error) => {
       setLoading(false);
-      console.log(error.message);
+      console.log('error.message from fetch: ',error.message);
     });
   }, []);
 
@@ -51,7 +58,7 @@ const AvaliableCourses = (props) => {
       lessonsCount={course.lessonsCount}
       skills={course.meta.skills}
       rating={course.rating}
-      videoLinkProps={course.meta.courseVideoPreview}
+      videoLink={course.meta.courseVideoPreview.link}
     />
   ));
 
@@ -62,17 +69,16 @@ const AvaliableCourses = (props) => {
     indexOfFirstCourse,
     indexOfLastCourse
   );
-
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <Fragment>
-      <ul className={"list-gtoup mb-4 " + classes.courses}>{currentCourses}</ul>
       <Pagination
         coursesPerPage={coursesPerPage}
         totalCourses={coursesList.length}
         paginate={paginate}
       />
+      <ul className={"list-gtoup mb-4 " + classes.courses}>{currentCourses}</ul>
     </Fragment>
   );
 };

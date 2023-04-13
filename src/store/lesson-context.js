@@ -4,7 +4,7 @@ import React from "react";
 const LessonContext = React.createContext({
   id: '',
   isActive: false,
-  locked: false,
+  locked: '',
   videoLink: '',
 });
 
