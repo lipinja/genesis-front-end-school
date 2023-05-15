@@ -8,13 +8,10 @@ const LessonsList = (props) => {
   const lessonHandler = (param) => {
     setIsActive(lessonCtx.isActive);
     props.onGetLessonLink();
-    // отримання часу перегляду відео
-    // const video = document.getElementById('myVideo');
-    const currentVIdeoTime = lessonCtx.videoLink.currentTime;
-
-    // збереження часу перегляду в локальному сховищі
+    
     localStorage.setItem("lessonId", lessonCtx.id);
-    localStorage.setItem("videoProgress", currentVIdeoTime);
+    localStorage.setItem("lesson start time", localStorage.getItem(`videoPausedCurrentTime ${lessonCtx.id}`) );
+    lessonCtx.startTime = parseInt(localStorage.getItem(`videoPausedCurrentTime ${lessonCtx.id}`)) 
   };
   const lessonList = props.lessons.map((lesson) => (
     <LessonItem

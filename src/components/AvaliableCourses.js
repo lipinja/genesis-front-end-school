@@ -2,11 +2,9 @@ import React, { Fragment, useEffect, useState } from "react";
 import classes from "./AvaliableCourses.module.css";
 import CourseItem from "./CourseItem";
 import Pagination from "./Pagination";
-// import axios from 'axios';
 
 const AvaliableCourses = (props) => {
   const [courses, setCourses] = useState([]);
-  // const [courseVideoLink, setCourseVideoLink] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [coursesPerPage] = useState(10);
@@ -23,15 +21,15 @@ const AvaliableCourses = (props) => {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
-      const responseData = await response.json();
+        );
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+        const responseData = await response.json();
       const coursesWithValidLinks = [];
       responseData.courses.map((course) => {
         if (course.meta.courseVideoPreview) {
-          coursesWithValidLinks.push(course);
+         coursesWithValidLinks.push(course);
         }
       });
       setCourses(coursesWithValidLinks.reverse());
@@ -78,7 +76,7 @@ const AvaliableCourses = (props) => {
         totalCourses={coursesList.length}
         paginate={paginate}
       />
-      <ul className={"list-gtoup mb-4 " + classes.courses}>{currentCourses}</ul>
+      <ul className={classes.courses}>{currentCourses}</ul>
     </Fragment>
   );
 };

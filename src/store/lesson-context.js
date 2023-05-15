@@ -6,6 +6,7 @@ const LessonContext = React.createContext({
   isActive: false,
   locked: '',
   videoLink: '',
+  startTime: '',
 });
 
 
@@ -15,6 +16,7 @@ export const LessonContextProvider = (props) => {
     isActive: props.isActive,
     locked: props.locked,
     videoLink: props.videoLink,
+    startTime: props.startTime,
   };
 
   return (
